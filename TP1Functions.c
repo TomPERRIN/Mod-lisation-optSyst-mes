@@ -47,7 +47,7 @@ void descendingSorting(float tab[], int n) {
     }
 }
 
-void trierParRatio(int valeurs[], int poids[], int n) {
+void sortByRatio(int valeurs[], int poids[], int n) {
     float tempValeur, tempPoids, tempRatio;
     float ratio[n];
     
@@ -88,6 +88,14 @@ void printIntArray(int tab[], int n){
 	printf("]\n");
 }
 
+void printFloatArray(float tab[], int n){
+	printf("[ ");
+	for (int i = 0; i < n; i++) {
+		printf("%f ", tab[i]);
+    }
+	printf("]\n");
+}
+
 float minBtwnFloat(float a, float b){
 	if (a <= b){
 		return a;
@@ -97,39 +105,58 @@ float minBtwnFloat(float a, float b){
 
 int KP_greedy(dataSet* dsptr)
 {
-	int rval = 0; 
+	int rval = 0;
+	int capacity = dsptr->b;
+	int size = dsptr->n;		// ratio[i] = (float) dspKP_LPtr->c[i] / dsptr->a[i];
+	dsptr->s = (float*)malloc(sizeof(float)*size);
 
+	for (int i=0; i < size; i++){
+		dsptr->s[i] = 0;
+	}
+	sortByRatio(dsptr->c, dsptr->a, size);
+
+	for (int i=0; i < size; i++){
+		if (capacity == 0){
+			printf("Solution optimale KP_greedy : %d\n", rval);
+			return rval;
+		}
+		if (capacity >= dsptr->a[i]){
+			dsptr->s[i] = 1;
+			capacity -= dsptr->a[i];
+			rval+=dsptr->c[i];
+		}
+	}
+	printf("Solution optimale KP_greedy : %d\n", rval);
 	return rval;
 }
 
 int KP_LP(dataSet* dsptr)
 {
-	int rval = 0;
+	float rval = 0;
 	int capacity = dsptr->b;
 	int size = dsptr->n;
 	dsptr->s = (float*)malloc(sizeof(float)*size);
 
-	// float ratio [size];
 	for (int i=0; i < size; i++){
-		// ratio[i] = (float) dsptr->c[i] / dsptr->a[i];
 		dsptr->s[i] = 0;
 	}
-	trierParRatio(dsptr->c, dsptr->a, size);
-
-	// printf("Capacity : %d\n", capacity);
-	// printIntArray(dsptr->c, size);
-	// printIntArray(dsptr->a, size);
+	sortByRatio(dsptr->c, dsptr->a, size);
+	
+	printIntArray(dsptr->c, size);
+	printIntArray(dsptr->a, size);
 
 	for (int i=0; i < size; i++){
 		if (capacity == 0){
-			printf("Solution optimale KP_LP : %d\n", rval);
+			printf("Solution optimale KP_LP : %f\n", rval);
 			return rval;
 		}
-		dsptr->s[i] = minBtwnFloat(capacity / dsptr->a[i], (float) 1);
+		dsptr->s[i] = minBtwnFloat((float)capacity / dsptr->a[i], (float) 1);
 		capacity = capacity - dsptr->s[i]*dsptr->a[i];
 		rval += dsptr->s[i]*dsptr->c[i];
 	}
-	printf("Solution optimale KP_LP : %d\n", rval);
+
+	printFloatArray(dsptr->s, size);
+	printf("Solution optimale KP_LP : %f\n", rval);
 	return rval;
 }
 
