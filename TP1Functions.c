@@ -91,7 +91,7 @@ void printIntArray(int tab[], int n){
 void printFloatArray(float tab[], int n){
 	printf("[ ");
 	for (int i = 0; i < n; i++) {
-		printf("%f ", tab[i]);
+		printf("%.2f ", tab[i]);
     }
 	printf("]\n");
 }
@@ -103,11 +103,18 @@ float minBtwnFloat(float a, float b){
 	return b;
 }
 
+float maxBtwnFloat(float a, float b){
+	if (a >= b){
+		return a;
+	}
+	return b;
+}
+
 int KP_greedy(dataSet* dsptr)
 {
 	int rval = 0;
 	int capacity = dsptr->b;
-	int size = dsptr->n;		// ratio[i] = (float) dspKP_LPtr->c[i] / dsptr->a[i];
+	int size = dsptr->n;
 	dsptr->s = (float*)malloc(sizeof(float)*size);
 
 	for (int i=0; i < size; i++){
@@ -160,3 +167,58 @@ int KP_LP(dataSet* dsptr)
 	return rval;
 }
 
+int KP_DynamicProgramming(dataSet* dsptr)
+{
+	float rval = 0;
+	int capacity = dsptr->b;
+	int size = dsptr->n;
+	dsptr->s = (float*)malloc(sizeof(float)*size);
+
+	int* Z = (int*)malloc(sizeof(int)*capacity);
+	int* Z2nd = (int*)malloc(sizeof(int)*capacity);
+	int* D = (int*)malloc(sizeof(int)*capacity);
+
+	for (int y=0; y < capacity; y++){
+		Z[y] = 0;
+		D[y] = 0;
+	}
+
+	for (int k=0; k < size-1; k++){
+		for (int y = 0; y < capacity; y++){
+			Z2nd[y] = Z[y];
+		}
+
+		for(int y = dsptr->a[k+1]; y < capacity; y++){
+			if(Z2nd[y-dsptr->a[k+1]] + dsptr->c[k+1] > Z2nd[y]){
+				D[y] = k+1;
+				Z[y] = maxBtwnFloat(Z2nd[y], dsptr->c[k+1] + Z2nd[y-dsptr->a[k+1]]);
+			}
+		}
+	}
+	printf("Z = ");
+	printIntArray(Z, capacity);
+	printf("D = ");
+	printIntArray(D, capacity);
+
+	for (int j=1; j < size; j++){
+		dsptr->s[j] = 0;
+	}
+
+	int y = capacity;
+	
+	while (y > 0) {
+		while (Z[y] == Z[y-1]){
+			y-=1;
+		}
+		dsptr->s[D[y]] = 1;
+		y -= dsptr->a[D[y]];
+	}
+	
+	printFloatArray(dsptr->s, size);
+	
+	for (int i=0; i< size; i++){
+		rval += dsptr->s[i]*dsptr->c[i];
+	}
+	printf("Solution optimale KP_DynamicProgramming : %.2f\n", rval);
+	return rval;
+}

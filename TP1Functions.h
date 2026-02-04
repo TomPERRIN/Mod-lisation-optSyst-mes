@@ -29,5 +29,5 @@ typedef struct dataSet
 int read_TP1_instance(FILE*fin,dataSet* dsptr);
 int KP_greedy(dataSet* dsptr);
 int KP_LP(dataSet* dsptr);
-
+int KP_KP_DynamicProgramming(dataSet* dsptr);
 
