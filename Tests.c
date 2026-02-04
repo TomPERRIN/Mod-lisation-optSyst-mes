@@ -7,8 +7,8 @@
 #include "TP1Functions.h"
 #include <time.h>
 
-void write_file_n_and_b(char* instance_file, int n, int b){
-    FILE *in = fopen("instance1.csv", "r");
+int write_file_n_and_b(char* instance_file, int n, int b){
+    FILE *in = fopen(instance_file, "r");
     FILE *out = fopen("temp.csv", "w");
 
     if (!in || !out) return 1;
@@ -30,6 +30,7 @@ void write_file_n_and_b(char* instance_file, int n, int b){
 
     remove(instance_file);
     rename("temp.csv", instance_file);
+    return 0;
 }
 
 
@@ -95,4 +96,8 @@ void TestsKP_FixedB(char* instance_file, double* resultsKP_LR, double* resultsKP
         resultsKP_DynamicProgramming[i] = (double)(end - start) / CLOCKS_PER_SEC;
         
     }
+}
+
+int main(){
+    return 0;
 }
