@@ -110,7 +110,7 @@ float maxBtwnFloat(float a, float b){
 	return b;
 }
 
-int KP_greedy(dataSet* dsptr)
+int KP_Greedy(dataSet* dsptr)
 {
 	int rval = 0;
 	int capacity = dsptr->b;

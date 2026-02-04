@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <math.h>
 #include "TP1Functions.h"
+#include "Tests.h"
 
 
 int main(int argc, char **argv)
@@ -52,23 +53,6 @@ int main(int argc, char **argv)
 	KP_LP(&data);
 	KP_DynamicProgramming(&data);
 
-	int nbTests = 10;
-
-	float* timeNFixedKP_LR = (float*)malloc(sizeof(float)*nbTests);
-	float* timeNFixedKP_Greedy = (float*)malloc(sizeof(float)*nbTests);
-	float* timeNFixedKP_DynamicProgramming = (float*)malloc(sizeof(float)*nbTests);
-	
-	float* timeBFixedKP_Greedy = (float*)malloc(sizeof(float)*nbTests);
-	float* timeBFixedKP_LR = (float*)malloc(sizeof(float)*nbTests);
-	float* timeBFixedKP_DynamicProgramming = (float*)malloc(sizeof(float)*nbTests);
-	
-	//n fixed tests
-	//modifier csv n = 10
-	for (int i = 1; i <= nbTests; i++){
-		//modifier csv b = 100*i
-		//timeNFixedKP_LR [i-1] = timeof(KP_LP(&data))
-		//timeNFixedKP_Greedy [i-1] = timeof(KP_Greedy(&data))
-		//timeNFixedKP_DynamicProgramming [i-1] = timeof(KP_DynamicProgramming(&data))
-	}
+	TestsNFixed(instance_file);
 	return rval;
 }
