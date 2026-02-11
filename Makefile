@@ -11,7 +11,7 @@ EXE = TP1
 
 # CHANGEME: Here is the name of all object files corresponding to the source
 #           code that you wrote in order to define the problem statement
-OBJS = TP1Functions.o TP1.o 
+OBJS = TP1Functions.o Tests.o TP1.o 
 
 # CHANGEME: Additional libraries
 #ADDLIBS = -L$(CPLEXLIBDIR) -lilocplex -lcplex -m64 -lm -lpthread

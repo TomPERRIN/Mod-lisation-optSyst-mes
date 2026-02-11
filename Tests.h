@@ -1,11 +1,24 @@
+#ifndef TESTS_H
+#define TESTS_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
 #include <math.h>
-#include <errno.h>
 #include <time.h>
-#include <assert.h>
 
-void TestsKP_FixedN(char* instance_file, double* resultsKP_LR, double* resultsKP_Greedy, double* resultsKP_DynamicProgramming);
-void TestsKP_FixedB(char* instance_file, double* resultsKP_LR, double* resultsKP_Greedy, double* resultsKP_DynamicProgramming);
+// TP1 - Tests de complexité pour Greedy et LP
+void TestTP1_FixedN_VaryingB(char* instance_file, char* output_csv);
+void TestTP1_FixedB_VaryingN(char* instance_file, char* output_csv);
+
+// TP2 - Tests de complexité pour Dynamic Programming
+void TestTP2_FixedN_VaryingB(char* instance_file, char* output_csv);
+void TestTP2_FixedB_VaryingN(char* instance_file, char* output_csv);
+
+// TP3 - Tests de preprocessing
+void TestTP3_PreprocessingAnalysis(char* instance_file, char* output_csv);
+
+// Utilitaires
+void generate_test_instances(int max_n, int max_b);
+
+#endif
