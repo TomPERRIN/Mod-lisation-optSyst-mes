@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	
 	// Fichier instance par défaut
 	char instance_file[1024];
-	snprintf(instance_file, 1024, "%s", "instance1.csv");
+	snprintf(instance_file, 1024, "%s", "test.csv");
 
 	// Parsing des arguments en ligne de commande
 	char c;

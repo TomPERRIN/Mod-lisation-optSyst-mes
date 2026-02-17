@@ -34,7 +34,12 @@ int modify_instance_params(char* instance_file, int new_n, int new_b)
 	// Copier le reste du fichier (limité aux new_n premières lignes)
 	char buffer[256];
 	int count = 0;
-	while(fgets(buffer, sizeof buffer, in) && count < new_n) {
+	// while(fgets(buffer, sizeof buffer, in) && count < new_n) {
+	// 	fputs(buffer, out);
+	// 	count++;
+	// }
+
+	while(fgets(buffer, sizeof buffer, in)) {
 		fputs(buffer, out);
 		count++;
 	}
@@ -67,7 +72,8 @@ void TestTP1_FixedN_VaryingB(char* instance_file, char* output_csv)
 		int b = b_start + i * b_step;
 		
 		// Générer une instance
-		generate_random_instance(instance_file, fixed_n, b, 20, 15);
+		// generate_random_instance(instance_file, fixed_n, b, 20, 15);
+		modify_instance_params(instance_file, fixed_n, b);
 		
 		// Charger l'instance
 		dataSet data;
@@ -113,7 +119,8 @@ void TestTP1_FixedB_VaryingN(char* instance_file, char* output_csv)
 		int n = n_start + i * n_step;
 		
 		// Générer une instance
-		generate_random_instance(instance_file, n, fixed_b, 20, 15);
+		// generate_random_instance(instance_file, n, fixed_b, 20, 15);
+		modify_instance_params(instance_file, n, fixed_b);
 		
 		// Charger l'instance
 		dataSet data;
@@ -163,7 +170,8 @@ void TestTP2_FixedN_VaryingB(char* instance_file, char* output_csv)
 		int b = b_start + i * b_step;
 		
 		// Générer une instance
-		generate_random_instance(instance_file, fixed_n, b, 20, 15);
+		// generate_random_instance(instance_file, fixed_n, b, 20, 15);
+		modify_instance_params(instance_file, fixed_n, b);
 		
 		// Charger l'instance
 		dataSet data;
@@ -204,7 +212,8 @@ void TestTP2_FixedB_VaryingN(char* instance_file, char* output_csv)
 		int n = n_start + i * n_step;
 		
 		// Générer une instance
-		generate_random_instance(instance_file, n, fixed_b, 20, 15);
+		// generate_random_instance(instance_file, n, fixed_b, 20, 15);
+		modify_instance_params(instance_file, n, fixed_b);
 		
 		// Charger l'instance
 		dataSet data;
@@ -247,7 +256,8 @@ void TestTP3_PreprocessingAnalysis(char* instance_file, char* output_csv)
 		int b = 50 + rand() % 950;  // b entre 50 et 1000
 		
 		// Générer une instance
-		generate_random_instance(instance_file, n, b, 20, 15);
+		// generate_random_instance(instance_file, n, b, 20, 15);
+		modify_instance_params(instance_file, n, b);
 		
 		// Test SANS preprocessing (DP direct)
 		dataSet data1;
