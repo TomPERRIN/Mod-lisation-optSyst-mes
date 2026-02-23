@@ -27,6 +27,7 @@ int main(int argc, char **argv)
 {
 	int rval = 0;
 	
+	
 	// Fichier instance par défaut
 	char instance_file[1024];
 	snprintf(instance_file, 1024, "%s", "test.csv");

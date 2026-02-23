@@ -269,32 +269,15 @@ int KP_Preprocessing(dataSet* dsptr)
 	sortByRatio(dsptr->c, dsptr->a, num_items);
 	
 	// Étape 1: Calculer une solution gloutonne z_tilde
-	int z_tilde = 0;
-	int temp_capacity = capacity;
-	int* x_tilde = (int*)calloc(num_items, sizeof(int));
-	
-	for(int i = 0; i < num_items; i++) {
-		if(temp_capacity >= dsptr->a[i]) {
-			x_tilde[i] = 1;
-			temp_capacity -= dsptr->a[i];
-			z_tilde += dsptr->c[i];
-		}
-	}
-	
+	float* x_tilde = (float*)calloc(num_items, sizeof(float));
+	int z_tilde = KP_Greedy(dsptr);
+	x_tilde = dsptr->s;
 	printf("Solution gloutonne z_tilde = %d\n", z_tilde);
 	dsptr->z_greedy = z_tilde;
 	
 	// Étape 2: Calculer la relaxation linéaire z_bar
-	float z_bar = 0;
-	temp_capacity = capacity;
-	
-	for(int i = 0; i < num_items; i++) {
-		if(temp_capacity == 0) break;
-		float fraction = minFloat((float)temp_capacity / (float)dsptr->a[i], 1.0);
-		temp_capacity -= (int)(fraction * dsptr->a[i]);
-		z_bar += fraction * dsptr->c[i];
-	}
-	
+	float z_bar = KP_LP(dsptr);
+
 	printf("Relaxation linéaire z_bar = %.2f\n", z_bar);
 	dsptr->z_bar = z_bar;
 	
@@ -391,8 +374,8 @@ int KP_Preprocessing(dataSet* dsptr)
 		}
 		
 		// Résoudre par programmation dynamique
-		int reduced_value = KP_DynamicProgramming(&reduced_problem);
-		
+		KP_DynamicProgramming(&reduced_problem);
+
 		// Reconstruire la solution complète
 		dsptr->s = (float*)calloc(num_items, sizeof(float));
 		

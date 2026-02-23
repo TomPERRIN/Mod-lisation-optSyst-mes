@@ -74,7 +74,7 @@ void TestTP1_FixedN_VaryingB(char* instance_file, char* output_csv)
 		// Générer une instance
 		// generate_random_instance(instance_file, fixed_n, b, 20, 15);
 		modify_instance_params(instance_file, fixed_n, b);
-		
+	
 		// Charger l'instance
 		dataSet data;
 		FILE* fin = fopen(instance_file, "r");
