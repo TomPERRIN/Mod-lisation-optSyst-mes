@@ -49,7 +49,6 @@ int main(int argc, char **argv)
 		}
 	}
 
-	// Mode interactif si aucun argument
 	if(argc == 1) {
 		int choice = -1;
 		

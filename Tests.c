@@ -30,7 +30,7 @@ int modify_instance_params(char* instance_file, int new_n, int new_b)
 	// Écrire les nouvelles valeurs
 	fprintf(out, "%d,%d\n", new_n, new_b);
 
-	// Copier le reste du fichier (limité aux new_n premières lignes)
+	// Copier le reste du fichier
 	char buffer[256];
 	int count = 0;
 
@@ -229,8 +229,8 @@ void TestTP3_PreprocessingAnalysis(char* instance_file, char* output_csv)
 	fprintf(fout, "test_id,n,b,vars_fixed,vars_fixed_percent,time_without_preprocessing_ms,time_with_preprocessing_ms,speedup\n");
 	
 	for(int i = 0; i < num_tests; i++) {
-		int n = 20 + rand() % 80;  // n entre 20 et 100
-		int b = 50 + rand() % 950;  // b entre 50 et 1000
+		int n = 20 + rand() % 80;
+		int b = 50 + rand() % 950;
 		
 		modify_instance_params(instance_file, n, b);
 		

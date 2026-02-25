@@ -72,7 +72,6 @@ void sortByRatioDec(int values[], int weights[], int n)
 	float tempValue, tempWeight, tempRatio;
 	float ratio[n];
 	
-	// Calcul des ratios
 	for(int i = 0; i < n; i++) {
 		ratio[i] = (float)values[i] / (float)weights[i];
 	}
@@ -81,7 +80,6 @@ void sortByRatioDec(int values[], int weights[], int n)
 	for(int i = 0; i < n - 1; i++) {
 		for(int j = 0; j < n - i - 1; j++) {
 			if(ratio[j] < ratio[j + 1]) {
-				//Echange des deux éléments
 				tempRatio = ratio[j];
 				ratio[j] = ratio[j + 1];
 				ratio[j + 1] = tempRatio;
