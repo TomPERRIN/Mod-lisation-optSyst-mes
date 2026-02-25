@@ -6,7 +6,6 @@
 // UTILITAIRES
 // ============================================================================
 
-// Obtenir le temps actuel en microsecondes
 double get_time_ms()
 {
 	struct timeval tv;
@@ -34,10 +33,6 @@ int modify_instance_params(char* instance_file, int new_n, int new_b)
 	// Copier le reste du fichier (limité aux new_n premières lignes)
 	char buffer[256];
 	int count = 0;
-	// while(fgets(buffer, sizeof buffer, in) && count < new_n) {
-	// 	fputs(buffer, out);
-	// 	count++;
-	// }
 
 	while(fgets(buffer, sizeof buffer, in)) {
 		fputs(buffer, out);
@@ -71,22 +66,17 @@ void TestTP1_FixedN_VaryingB(char* instance_file, char* output_csv)
 	for(int i = 0; i < num_tests; i++) {
 		int b = b_start + i * b_step;
 		
-		// Générer une instance
-		// generate_random_instance(instance_file, fixed_n, b, 20, 15);
 		modify_instance_params(instance_file, fixed_n, b);
 	
-		// Charger l'instance
 		dataSet data;
 		FILE* fin = fopen(instance_file, "r");
 		read_TP1_instance(fin, &data);
 		fclose(fin);
 		
-		// Test Greedy
 		double start = get_time_ms();
 		int value_greedy = KP_Greedy(&data);
 		double time_greedy = get_time_ms() - start;
-		
-		// Test LP
+
 		start = get_time_ms();
 		int value_lp = KP_LP(&data);
 		double time_lp = get_time_ms() - start;
@@ -118,22 +108,17 @@ void TestTP1_FixedB_VaryingN(char* instance_file, char* output_csv)
 	for(int i = 0; i < num_tests; i++) {
 		int n = n_start + i * n_step;
 		
-		// Générer une instance
-		// generate_random_instance(instance_file, n, fixed_b, 20, 15);
 		modify_instance_params(instance_file, n, fixed_b);
 		
-		// Charger l'instance
 		dataSet data;
 		FILE* fin = fopen(instance_file, "r");
 		read_TP1_instance(fin, &data);
 		fclose(fin);
 		
-		// Test Greedy
 		double start = get_time_ms();
 		int value_greedy = KP_Greedy(&data);
 		double time_greedy = get_time_ms() - start;
 		
-		// Test LP
 		start = get_time_ms();
 		int value_lp = KP_LP(&data);
 		double time_lp = get_time_ms() - start;
@@ -169,17 +154,13 @@ void TestTP2_FixedN_VaryingB(char* instance_file, char* output_csv)
 	for(int i = 0; i < num_tests; i++) {
 		int b = b_start + i * b_step;
 		
-		// Générer une instance
-		// generate_random_instance(instance_file, fixed_n, b, 20, 15);
 		modify_instance_params(instance_file, fixed_n, b);
 		
-		// Charger l'instance
 		dataSet data;
 		FILE* fin = fopen(instance_file, "r");
 		read_TP1_instance(fin, &data);
 		fclose(fin);
 		
-		// Test Dynamic Programming
 		double start = get_time_ms();
 		int value_dp = KP_DynamicProgramming(&data);
 		double time_dp = get_time_ms() - start;
@@ -211,17 +192,13 @@ void TestTP2_FixedB_VaryingN(char* instance_file, char* output_csv)
 	for(int i = 0; i < num_tests; i++) {
 		int n = n_start + i * n_step;
 		
-		// Générer une instance
-		// generate_random_instance(instance_file, n, fixed_b, 20, 15);
 		modify_instance_params(instance_file, n, fixed_b);
 		
-		// Charger l'instance
 		dataSet data;
 		FILE* fin = fopen(instance_file, "r");
 		read_TP1_instance(fin, &data);
 		fclose(fin);
 		
-		// Test Dynamic Programming
 		double start = get_time_ms();
 		int value_dp = KP_DynamicProgramming(&data);
 		double time_dp = get_time_ms() - start;
@@ -255,8 +232,6 @@ void TestTP3_PreprocessingAnalysis(char* instance_file, char* output_csv)
 		int n = 20 + rand() % 80;  // n entre 20 et 100
 		int b = 50 + rand() % 950;  // b entre 50 et 1000
 		
-		// Générer une instance
-		// generate_random_instance(instance_file, n, b, 20, 15);
 		modify_instance_params(instance_file, n, b);
 		
 		// Test SANS preprocessing (DP direct)
@@ -279,10 +254,7 @@ void TestTP3_PreprocessingAnalysis(char* instance_file, char* output_csv)
 		KP_Preprocessing(&data2);
 		double time_with = get_time_ms() - start;
 		
-		// Calculer le nombre de variables fixées
-		// (on pourrait améliorer en retournant cette info depuis KP_Preprocessing)
 		int vars_fixed = 0;
-		// Pour l'instant on estime avec un calcul simplifié
 		
 		double speedup = time_without / time_with;
 		

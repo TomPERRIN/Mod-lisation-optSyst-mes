@@ -67,7 +67,7 @@ int maxInt(int a, int b)
 }
 
 // Tri des objets par ratio décroissant c[i]/a[i]
-void sortByRatio(int values[], int weights[], int n)
+void sortByRatioDec(int values[], int weights[], int n)
 {
 	float tempValue, tempWeight, tempRatio;
 	float ratio[n];
@@ -77,21 +77,19 @@ void sortByRatio(int values[], int weights[], int n)
 		ratio[i] = (float)values[i] / (float)weights[i];
 	}
 
-	// Tri à bulles basé sur le ratio (décroissant)
+	// Tri à bulles sur le ratio (décroissant)
 	for(int i = 0; i < n - 1; i++) {
 		for(int j = 0; j < n - i - 1; j++) {
 			if(ratio[j] < ratio[j + 1]) {
-				// Échanger les ratios
+				//Echange des deux éléments
 				tempRatio = ratio[j];
 				ratio[j] = ratio[j + 1];
 				ratio[j + 1] = tempRatio;
 
-				// Échanger les valeurs
 				tempValue = values[j];
 				values[j] = values[j + 1];
 				values[j + 1] = tempValue;
 
-				// Échanger les poids
 				tempWeight = weights[j];
 				weights[j] = weights[j + 1];
 				weights[j + 1] = tempWeight;
@@ -110,14 +108,12 @@ int KP_Greedy(dataSet* dsptr)
 	int remaining_capacity = dsptr->b;
 	int num_items = dsptr->n;
 	
-	// Allocation de la solution
 	dsptr->s = (float*)malloc(sizeof(float) * num_items);
 	for(int i = 0; i < num_items; i++) {
 		dsptr->s[i] = 0;
 	}
 
-	// Tri par ratio décroissant
-	sortByRatio(dsptr->c, dsptr->a, num_items);
+	sortByRatioDec(dsptr->c, dsptr->a, num_items);
 
 	// Algorithme glouton
 	for(int i = 0; i < num_items; i++) {
@@ -146,14 +142,12 @@ int KP_LP(dataSet* dsptr)
 	int remaining_capacity = dsptr->b;
 	int num_items = dsptr->n;
 	
-	// Allocation de la solution
 	dsptr->s = (float*)malloc(sizeof(float) * num_items);
 	for(int i = 0; i < num_items; i++) {
 		dsptr->s[i] = 0;
 	}
 
-	// Tri par ratio décroissant
-	sortByRatio(dsptr->c, dsptr->a, num_items);
+	sortByRatioDec(dsptr->c, dsptr->a, num_items);
 
 	// Relaxation linéaire
 	for(int i = 0; i < num_items; i++) {
@@ -180,7 +174,6 @@ int KP_DynamicProgramming(dataSet* dsptr)
 	int capacity = dsptr->b;
 	int num_items = dsptr->n;
 	
-	// Allocation de la solution
 	dsptr->s = (float*)malloc(sizeof(float) * num_items);
 
 	// Tableaux Z et D : taille (capacity + 1) pour indices 0 à b
@@ -188,23 +181,18 @@ int KP_DynamicProgramming(dataSet* dsptr)
 	int* Z_temp = (int*)calloc(capacity + 1, sizeof(int));
 	int* D = (int*)calloc(capacity + 1, sizeof(int));
 
-	// Initialisation
 	for(int y = 0; y <= capacity; y++) {
 		Z[y] = 0;
 		D[y] = 0;
 	}
 
-	// Tri par ratio décroissant
-	sortByRatio(dsptr->c, dsptr->a, num_items);
+	sortByRatioDec(dsptr->c, dsptr->a, num_items);
 
-	// Programmation dynamique
 	for(int k = 0; k < num_items; k++) {
-		// Copier Z dans Z_temp
 		for(int y = 0; y <= capacity; y++) {
 			Z_temp[y] = Z[y];
 		}
 
-		// Mise à jour de Z et D
 		for(int y = dsptr->a[k]; y <= capacity; y++) {
 			if(Z_temp[y - dsptr->a[k]] + dsptr->c[k] > Z_temp[y]) {
 				D[y] = k;
@@ -218,7 +206,6 @@ int KP_DynamicProgramming(dataSet* dsptr)
 	printf("D = ");
 	printIntArray(D, capacity + 1);
 
-	// Initialiser la solution à 0
 	for(int j = 0; j < num_items; j++) {
 		dsptr->s[j] = 0;
 	}
@@ -238,7 +225,6 @@ int KP_DynamicProgramming(dataSet* dsptr)
 	printf("Solution optimale x* = ");
 	printFloatArray(dsptr->s, num_items);
 
-	// Calcul de la valeur objectif
 	for(int i = 0; i < num_items; i++) {
 		objective_value += dsptr->s[i] * dsptr->c[i];
 	}
@@ -265,23 +251,21 @@ int KP_Preprocessing(dataSet* dsptr)
 	int original_num_items = num_items;
 	int original_capacity = capacity;
 	
-	// Tri par ratio décroissant
-	sortByRatio(dsptr->c, dsptr->a, num_items);
+	sortByRatioDec(dsptr->c, dsptr->a, num_items);
 	
-	// Étape 1: Calculer une solution gloutonne z_tilde
+	// Solution gloutonne z_tilde
 	float* x_tilde = (float*)calloc(num_items, sizeof(float));
 	int z_tilde = KP_Greedy(dsptr);
 	x_tilde = dsptr->s;
 	printf("Solution gloutonne z_tilde = %d\n", z_tilde);
 	dsptr->z_greedy = z_tilde;
 	
-	// Étape 2: Calculer la relaxation linéaire z_bar
+	// Relaxation linéaire z_bar
 	float z_bar = KP_LP(dsptr);
 
 	printf("Relaxation linéaire z_bar = %.2f\n", z_bar);
 	dsptr->z_bar = z_bar;
 	
-	// Étape 3: Déterminer l'indice p
 	int p = 0;
 	int sum_weights = 0;
 	for(int j = 0; j < num_items; j++) {
@@ -299,7 +283,7 @@ int KP_Preprocessing(dataSet* dsptr)
 	float critical_ratio = (p < num_items) ? (float)dsptr->c[p] / (float)dsptr->a[p] : 0;
 	printf("Ratio critique c[%d]/a[%d] = %.2f\n", p, p, critical_ratio);
 	
-	// Étape 4: Préprocessing des variables
+	// Préprocessing des variables
 	int num_fixed = 0;
 	int num_fixed_to_1 = 0;
 	int num_fixed_to_0 = 0;
@@ -316,13 +300,11 @@ int KP_Preprocessing(dataSet* dsptr)
 		if(c_bar_j >= gap) {
 			num_fixed++;
 			if(j < p) {
-				// Fixer à 1
 				x_tilde[j] = 1;
 				capacity -= dsptr->a[j];
 				num_fixed_to_1++;
 				printf(" --> FIXÉE À 1\n");
 			} else {
-				// Fixer à 0
 				x_tilde[j] = 0;
 				num_fixed_to_0++;
 				printf(" --> FIXÉE À 0\n");
@@ -341,7 +323,7 @@ int KP_Preprocessing(dataSet* dsptr)
 	printf("Variables restantes: %d\n", original_num_items - num_fixed);
 	printf("Capacité restante: %d / %d\n", capacity, original_capacity);
 	
-	// Créer le problème réduit
+	// Problème réduit
 	int num_free_vars = 0;
 	for(int j = 0; j < num_items; j++) {
 		float c_bar_j = dsptr->c[j] - critical_ratio * dsptr->a[j];
@@ -353,7 +335,7 @@ int KP_Preprocessing(dataSet* dsptr)
 	if(num_free_vars > 0) {
 		printf("\n==> Résolution du problème réduit par programmation dynamique...\n");
 		
-		// Créer une nouvelle instance avec seulement les variables libres
+		// Création d'une nouvelle instance avec les variables libres
 		dataSet reduced_problem;
 		reduced_problem.n = num_free_vars;
 		reduced_problem.b = capacity;
@@ -373,10 +355,8 @@ int KP_Preprocessing(dataSet* dsptr)
 			}
 		}
 		
-		// Résoudre par programmation dynamique
 		KP_DynamicProgramming(&reduced_problem);
 
-		// Reconstruire la solution complète
 		dsptr->s = (float*)calloc(num_items, sizeof(float));
 		
 		// Variables fixées
@@ -392,7 +372,6 @@ int KP_Preprocessing(dataSet* dsptr)
 			dsptr->s[mapping[i]] = reduced_problem.s[i];
 		}
 		
-		// Calculer la valeur totale
 		int total_value = 0;
 		for(int j = 0; j < num_items; j++) {
 			total_value += dsptr->s[j] * dsptr->c[j];

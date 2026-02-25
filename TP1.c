@@ -17,7 +17,6 @@ void print_menu()
 	printf("2. Tests TP1 (Greedy & LP)\n");
 	printf("3. Tests TP2 (Dynamic Programming)\n");
 	printf("4. Tests TP3 (Preprocessing)\n");
-	printf("5. Générer instances de test\n");
 	printf("0. Quitter\n");
 	printf("========================================\n");
 	printf("Votre choix: ");
@@ -97,7 +96,6 @@ int main(int argc, char **argv)
 				}
 				
 				case 2: {
-					// Tests TP1
 					printf("\nTests TP1 - Complexité Greedy & LP\n");
 					TestTP1_FixedN_VaryingB(instance_file, "results_tp1_fixed_n.csv");
 					TestTP1_FixedB_VaryingN(instance_file, "results_tp1_fixed_b.csv");
@@ -105,7 +103,6 @@ int main(int argc, char **argv)
 				}
 				
 				case 3: {
-					// Tests TP2
 					printf("\nTests TP2 - Complexité Dynamic Programming\n");
 					TestTP2_FixedN_VaryingB(instance_file, "results_tp2_fixed_n.csv");
 					TestTP2_FixedB_VaryingN(instance_file, "results_tp2_fixed_b.csv");
@@ -113,18 +110,11 @@ int main(int argc, char **argv)
 				}
 				
 				case 4: {
-					// Tests TP3
 					printf("\nTests TP3 - Analyse du Preprocessing\n");
 					TestTP3_PreprocessingAnalysis(instance_file, "results_tp3_preprocessing.csv");
 					break;
 				}
-				
-				case 5: {
-					// Générer instances de test
-					generate_test_instances(100, 1000);
-					break;
-				}
-				
+
 				case 0:
 					printf("Au revoir!\n");
 					break;
@@ -134,7 +124,6 @@ int main(int argc, char **argv)
 			}
 		}
 	} else {
-		// Mode ligne de commande classique
 		dataSet data;
 		FILE* fin = fopen(instance_file, "r");
 		if(!fin) {
