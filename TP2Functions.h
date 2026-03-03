@@ -76,10 +76,10 @@ typedef struct dataSet
 int read_TP2_instance(FILE*fin,dataSet* dsptr);
 int solve_2DKP(dataSet* dsptr);
 int solve_1DKP(dataSet* dsptr);
-void tests_b_g_fixed(char* instance_file, float* solvingTime, float* solvingTime2D);
-void tests_n_b_fixed(char* instance_file, float* solvingTime, float* solvingTime2D);
-void tests_n_g_fixed(char* instance_file, float* solvingTime, float* solvingTime2D);
+void tests_b_g_fixed(char* instance_file, unsigned long* solvingTime, unsigned long* solvingTime2D);
+void tests_n_b_fixed(char* instance_file, unsigned long* solvingTime, unsigned long* solvingTime2D);
+void tests_n_g_fixed(char* instance_file, unsigned long* solvingTime, unsigned long* solvingTime2D);
 
 
 int modify_instance_params(char* instance_file, int new_n, int new_b, int new_g);
-void printFloatArray(float* array, int size);
+void printUlArray(unsigned long* array, int size);

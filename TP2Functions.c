@@ -403,7 +403,7 @@ int solve_1DKP(dataSet* dsptr)
 }
 
 
-void tests_b_g_fixed(char* instance_file, float* solvingTime1D, float* solvingTime2D){
+void tests_b_g_fixed(char* instance_file, unsigned long* solvingTime1D, unsigned long* solvingTime2D){
 	int b = 200;
 	int g = 150;
 	unsigned long secondes;
@@ -433,7 +433,7 @@ void tests_b_g_fixed(char* instance_file, float* solvingTime1D, float* solvingTi
 	}
 }
 
-void tests_n_b_fixed(char* instance_file, float* solvingTime1D, float* solvingTime2D){
+void tests_n_b_fixed(char* instance_file, unsigned long* solvingTime1D, unsigned long* solvingTime2D){
 	int n = 100 ;
 	int b = 200;
 	unsigned long secondes;
@@ -461,7 +461,7 @@ void tests_n_b_fixed(char* instance_file, float* solvingTime1D, float* solvingTi
 	}
 }
 
-void tests_n_g_fixed(char* instance_file, float* solvingTime1D, float* solvingTime2D){
+void tests_n_g_fixed(char* instance_file, unsigned long* solvingTime1D, unsigned long* solvingTime2D){
 	int n = 100;
 	int g = 200;
 	unsigned long secondes;
@@ -524,10 +524,10 @@ int modify_instance_params(char* instance_file, int new_n, int new_b, int new_g)
 }
 
 
-void printFloatArray(float* array, int size){
+void printUlArray(unsigned long* array, int size){
 	printf("[");
 	for (int i=0; i<size; i++){
-		printf("%f ", array[i]);
+		printf("%lu ", array[i]);
 	}
 	printf("]\n");
 }

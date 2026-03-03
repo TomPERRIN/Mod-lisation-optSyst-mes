@@ -54,17 +54,17 @@ int main(int argc, char **argv)
 	// printf("------------------------------\n");
 	// solve_2DKP(&data); //0.02 sec
 	int nbTests = 10;
-	float* Solve_time_b_g_fixed = (float*)malloc(sizeof(float)*nbTests);
-	float* Solve_time_b_g_fixed2D = (float*)malloc(sizeof(float)*nbTests);
+	unsigned long* Solve_time_b_g_fixed = (unsigned long*)malloc(sizeof(unsigned long)*nbTests);
+	unsigned long* Solve_time_b_g_fixed2D = (unsigned long*)malloc(sizeof(unsigned long)*nbTests);
 	tests_b_g_fixed(instance_file, Solve_time_b_g_fixed, Solve_time_b_g_fixed2D);
 
-	// float* Solve_time_n_g_fixed = (float*)malloc(sizeof(float)*nbTests);
-	// float* Solve_time_n_g_fixed2D = (float*)malloc(sizeof(float)*nbTests);
-	// tests_n_g_fixed(instance_file, Solve_time_n_g_fixed, Solve_time_n_g_fixed2D);
+	unsigned long* Solve_time_n_g_fixed = (unsigned long*)malloc(sizeof(unsigned long)*nbTests);
+	unsigned long* Solve_time_n_g_fixed2D = (unsigned long*)malloc(sizeof(unsigned long)*nbTests);
+	tests_n_g_fixed(instance_file, Solve_time_n_g_fixed, Solve_time_n_g_fixed2D);
 	
-	// float* Solve_time_n_b_fixed = (float*)malloc(sizeof(float)*nbTests);
-	// float* Solve_time_n_b_fixed2D = (float*)malloc(sizeof(float)*nbTests);
-	// tests_n_b_fixed(instance_file, Solve_time_n_b_fixed, Solve_time_n_b_fixed2D);
+	unsigned long* Solve_time_n_b_fixed = (unsigned long*)malloc(sizeof(unsigned long)*nbTests);
+	unsigned long* Solve_time_n_b_fixed2D = (unsigned long*)malloc(sizeof(unsigned long)*nbTests);
+	tests_n_b_fixed(instance_file, Solve_time_n_b_fixed, Solve_time_n_b_fixed2D);
 
 	printf("------------------------------tests------------------------------\n");
 	printFloatArray(Solve_time_b_g_fixed, nbTests);
